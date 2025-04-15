@@ -14,6 +14,7 @@ let currentImages = "";
 let currentQuery = "";
 let page = 1;
  async function handleSubmit(event) {
+    page=1;
     event.preventDefault();
     const query = event.target.elements["search-text"].value.trim();
     currentQuery = query;
