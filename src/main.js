@@ -15,7 +15,7 @@ let currentQuery = "";
 let page = 1;
  async function handleSubmit(event) {
     event.preventDefault();
-    page = 30;
+    page = 1;
     const query = event.target.elements["search-text"].value.trim();
     if (query === "") {
         iziToast.warning({
