@@ -14,9 +14,16 @@ let currentImages = "";
 let currentQuery = "";
 let page = 1;
  async function handleSubmit(event) {
-    page=1;
     event.preventDefault();
+    page = 1;
     const query = event.target.elements["search-text"].value.trim();
+    if (query === "") {
+        iziToast.warning({
+            message: "Please enter a search query!",
+            position: "topRight",
+          });
+          return;
+    }
     currentQuery = query;
     showLoader();
     clearGallery();
@@ -33,9 +40,10 @@ let page = 1;
         
         createGallery(response.data.hits);
         
-        const totalImages = response.data.totalHits / 15;
+        const totalImages = Math.ceil(response.data.totalHits / 15);
+        
         currentImages = totalImages;
-        if(page <= totalImages) {
+        if(page < totalImages) {
             showLoadMoreButton();
             return;  
         }
@@ -47,9 +55,7 @@ let page = 1;
             message:"Что то пошло не так",
             position: "topRight"
         }))
-        .finally(() => hideLoader())
-        return query;
-    
+        .finally(() => hideLoader())   
 }
 
 
@@ -62,14 +68,14 @@ async function handleLoadMore() {
       const data = await getImagesByQuery(currentQuery, page);
       createGallery(data.data.hits);
       loadMore.disabled = false;
-      if(page<=currentImages){
+      if(page < currentImages){
         showLoadMoreButton();
         const galleryItem = document.querySelector(".gallery-item");
         const cardHeight = galleryItem.getBoundingClientRect().height;
 
         window.scrollBy ({
             left: 0,
-            top: cardHeight * 3,
+            top: cardHeight * 2,
             behavior: "smooth"
         })
         return;  
