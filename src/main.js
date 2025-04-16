@@ -15,7 +15,7 @@ let currentQuery = "";
 let page = 1;
  async function handleSubmit(event) {
     event.preventDefault();
-    page = 1;
+    page = 30;
     const query = event.target.elements["search-text"].value.trim();
     if (query === "") {
         iziToast.warning({
@@ -27,10 +27,11 @@ let page = 1;
     currentQuery = query;
     showLoader();
     clearGallery();
+    hideLoadMoreButton();
 
 
     await getImagesByQuery(query, page).then((response) => {
-        if(response.data.hits.length === 0) {
+        if (response.data.hits.length === 0) {
             iziToast.error({
                 message: "Sorry, there are no images matching your search query. Please try again!",
                 position: "topRight",
@@ -64,9 +65,11 @@ let page = 1;
 async function handleLoadMore() {
     page++
     loadMore.disabled = true;
+    loadMore.classList.replace("load-more", "loader");
     try {
       const data = await getImagesByQuery(currentQuery, page);
-      createGallery(data.data.hits);
+        createGallery(data.data.hits);
+        loadMore.classList.replace("loader", "load-more");
       loadMore.disabled = false;
       if(page < currentImages){
         showLoadMoreButton();

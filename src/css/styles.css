@@ -52,6 +52,7 @@ body {
   align-items: center;
   margin: auto;
   margin-top: 10px;
+  background-color: #fff;
   }
 
   @keyframes rotation {
@@ -156,4 +157,7 @@ button:hover {
   margin: 0 auto;
   display: block;
   
+}
+.loader:hover {
+  background-color: #FFF;
 }
